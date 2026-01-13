@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Calificar Servicio - Centro Histórico</title>
     
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" href="favicon.png">
+    <link rel="icon" type="image/png" href="favicon.png?v=1">
+    <link rel="shortcut icon" type="image/png" href="favicon.png?v=1">
+    <link rel="apple-touch-icon" href="favicon.png?v=1">
 
     <style>
         :root {
@@ -27,7 +28,6 @@
             min-height: 100vh;
         }
         
-        /* Contenedor del Logo */
         .header-logo {
             width: 100%;
             padding: 20px 0;
@@ -35,6 +35,7 @@
             justify-content: center;
             z-index: 1001;
         }
+
         .header-logo img {
             max-width: 180px;
             height: auto;
@@ -44,21 +45,21 @@
         #ui-inicio {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at center, #1a1f2b 0%, #05070a 100%);
-            z-index: 1000; display: flex; flex-direction: column; 
+            z-index: 2000; display: flex; flex-direction: column; 
             justify-content: center; align-items: center; text-align: center;
         }
 
-        .header-content { width: 100%; max-width: 300px; padding: 20px; }
         .btn-start {
-            padding: 16px 45px; border-radius: 50px; border: none;
+            padding: 18px 50px; border-radius: 50px; border: none;
             background: var(--btn-gradiente); color: white; 
             font-weight: bold; cursor: pointer;
             box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+            text-transform: uppercase;
         }
 
         .ui-card {
-            width: 88%; max-width: 360px; background: white; padding: 30px;
-            border-radius: 24px; text-align: center; display: none;
+            width: 90%; max-width: 380px; background: white; padding: 30px;
+            border-radius: 28px; text-align: center; display: none;
             box-shadow: 0 25px 50px rgba(0,0,0,0.6); box-sizing: border-box;
             color: #333; margin-top: 20px;
             animation: fadeIn 0.5s ease;
@@ -74,18 +75,19 @@
 
         .btn-google {
             background: #4285F4; color: white; text-decoration: none;
-            display: block; width: 100%; padding: 18px 0; border-radius: 14px;
+            display: block; width: 100%; padding: 20px 0; border-radius: 16px;
             font-weight: bold; margin-top: 20px;
         }
 
         input, textarea {
-            width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #EEE;
+            width: 100%; padding: 15px; margin: 8px 0; border: 1px solid #EEE;
             border-radius: 12px; box-sizing: border-box; background: #F9F9F9; font-size: 16px;
         }
 
         .btn-send {
             width: 100%; padding: 18px; border: none; border-radius: 14px;
             background: #1A1A1A; color: white; font-weight: bold; margin-top: 10px;
+            cursor: pointer;
         }
         .btn-send:disabled { background: #CCC; }
 
@@ -93,16 +95,16 @@
             text-align: left; font-size: 12px; color: #666; margin: 15px 0; 
             display: flex; align-items: flex-start; gap: 8px; 
         }
-        .privacy-box input { width: 18px; height: 18px; margin: 0; }
 
         .modal-overlay { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85); z-index: 10000;
             flex-direction: column; justify-content: center; align-items: center;
         }
+
         .modal-content {
-            background: white; color: #333; padding: 25px; border-radius: 20px;
-            width: 80%; max-width: 350px; text-align: left;
+            background: white; padding: 25px; border-radius: 20px;
+            width: 80%; max-width: 350px;
         }
     </style>
 </head>
@@ -113,12 +115,10 @@
     </div>
 
     <div id="ui-inicio">
-        <div class="header-logo" style="position: absolute; top: 20px;">
-            <img src="logo-cliente.webp" alt="Logo Cliente">
-        </div>
-        <div class="header-content">
+        <img src="logo-cliente.webp" alt="Logo Cliente" style="max-width: 180px; margin-bottom: 30px;">
+        <div style="max-width: 300px; padding: 20px;">
             <h1>CALIFICAR SERVICIO</h1>
-            <p>Tu opinión nos ayuda a mejorar. Cuéntanos cómo fue tu experiencia.</p>
+            <p style="color: #A0A0A0;">Tu opinión es muy importante para nosotros.</p>
             <button class="btn-start" onclick="iniciarEncuesta()">COMENZAR</button>
         </div>
     </div>
@@ -135,41 +135,32 @@
         <p style="margin:0; font-size: 0.85rem; color: #666;">Toca una estrella para calificar</p>
     </div>
 
+    <div id="step-google" class="ui-card">
+        <h2>¡Excelente!</h2>
+        <p>¿Podrías compartir tu reseña en Google?</p>
+        <a href="#" id="link-google" class="btn-google" target="_blank">ESCRIBIR RESEÑA</a>
+    </div>
+
     <div id="step-feedback" class="ui-card">
         <h2 style="margin:0 0 10px 0;">Danos una oportunidad</h2>
         <input type="text" id="fb-nombre" placeholder="Nombre completo">
         <textarea id="fb-comentario" rows="3" placeholder="¿Qué podemos mejorar?"></textarea>
-        
         <div class="privacy-box">
-            <input type="checkbox" id="privacy-check" onchange="toggleButton()">
-            <label for="privacy-check">Acepto el <a href="javascript:void(0)" onclick="toggleModal(true)" style="color: var(--magenta); font-weight: bold;">aviso de privacidad</a>.</label>
+            <input type="checkbox" id="privacy-check" onchange="document.getElementById('btn-submit-fb').disabled = !this.checked">
+            <label for="privacy-check">Acepto los términos de privacidad.</label>
         </div>
-
         <button id="btn-submit-fb" class="btn-send" onclick="enviarWhatsApp()" disabled>ENVIAR COMENTARIO</button>
     </div>
 
-    <div id="step-google" class="ui-card">
-        <h2 style="margin:0;">¡Excelente!</h2>
-        <p>¿Podrías compartir tu reseña en Google?</p>
-        <a href="https://search.google.com/local/writereview?placeid=TU_PLACE_ID" class="btn-google" target="_blank">ESCRIBIR RESEÑA</a>
-    </div>
-
-    <div id="modal-priv" class="modal-overlay">
-        <div class="modal-content">
-            <h3 style="margin-top:0; color:#4A148C">Privacidad de Datos</h3>
-            <p style="font-size: 14px; line-height: 1.5; color: #444;">
-                Sus datos (Nombre y Comentario) serán enviados directamente vía WhatsApp para atender su caso de forma personalizada. No almacenamos esta información en bases de datos externas.
-            </p>
-            <button class="btn-send" style="background: #4A148C;" onclick="toggleModal(false)">ENTENDIDO</button>
-        </div>
-    </div>
-
     <script>
+        // ID REAL DEL ZÓCALO CDMX PARA EVITAR EL ERROR 404
+        const MY_PLACE_ID = "ChIJ_6pkSM3-0YURDDaRslwM_0w"; 
         let estrellas = 0;
 
         function iniciarEncuesta() {
             document.getElementById('ui-inicio').style.display = 'none';
             document.getElementById('step-stars').style.display = 'block';
+            document.getElementById('link-google').href = `https://search.google.com/local/writereview?placeid=${MY_PLACE_ID}`;
         }
 
         document.querySelectorAll('.star').forEach(star => {
@@ -188,24 +179,12 @@
             });
         });
 
-        function toggleModal(show) {
-            document.getElementById('modal-priv').style.display = show ? 'flex' : 'none';
-        }
-
-        function toggleButton() {
-            const check = document.getElementById('privacy-check');
-            document.getElementById('btn-submit-fb').disabled = !check.checked;
-        }
-
         function enviarWhatsApp() {
             const nombre = document.getElementById('fb-nombre').value;
-            const comentario = document.getElementById('fb-comentario').value;
-            const miNumero = "5215542492026";
-            
-            if(!nombre || !comentario) return alert("Por favor, completa los campos.");
-
-            const textoMensaje = encodeURIComponent(`*REPORTE DE SERVICIO*\n\n*Nombre:* ${nombre}\n*Calificación:* ${estrellas} estrellas\n*Comentario:* ${comentario}`);
-            window.location.href = `https://wa.me/${miNumero}?text=${textoMensaje}`;
+            const msj = document.getElementById('fb-comentario').value;
+            if(!nombre || !msj) return alert("Completa los campos");
+            const texto = encodeURIComponent(`*REPORTE*\nNombre: ${nombre}\nEstrellas: ${estrellas}\nMsj: ${msj}`);
+            window.location.href = `https://wa.me/5215542492026?text=${texto}`;
         }
     </script>
 </body>
